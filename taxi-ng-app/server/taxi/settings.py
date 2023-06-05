@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import os # new
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -36,7 +37,10 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
+    "django.contrib.postgres", # new
     "django.contrib.staticfiles",
+    "rest_framework", # new
+    "trips", # new
 ]
 
 MIDDLEWARE = [
@@ -75,8 +79,12 @@ WSGI_APPLICATION = "taxi.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql", # new
+        "NAME":os.getenv("PGDATABASE"), # new
+        "USER":os.getenv("PGUSER"), # new
+        "PASSWORD":os.getenv("PGPASSWORD"), # new
+        "HOST":os.getenv("PGHOST", "localhost"), # new
+        "PORT":os.getenv("PGPORT", "5432"), # new
     }
 }
 
@@ -121,3 +129,5 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+AUTH_USER_MODEL = "trips.User" # new
